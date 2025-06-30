@@ -77,15 +77,39 @@ class local_importtosection_core_backup_renderer extends core_backup_renderer {
         $table = new html_table();
         $table->head = array('', get_string('sectionname'));
         $table->data = array();
+
+
+        $restrictcoursesections     =   false;
+
+        if (class_exists('\local_smuc_content_edit_restriction\content_edit_restriction')) {
+            $contentrestrict = new \local_smuc_content_edit_restriction\content_edit_restriction();
+            if ($contentrestrict->is_restricted_course($course->id))    {
+                $restrictcoursesections     =   true;
+            }
+        }
+
         foreach ($sections as $section) {
             $row = new html_table_row();
             $row->attributes['class'] = 'ics-course';
-            $row->cells = array(
-                html_writer::empty_tag('input', array('type' => 'radio', 'name' => 'targetsection', 'value' => $section->section)),
-                format_string(get_section_name($course, $section))
-            );
+
+            if ($restrictcoursesections == true && ($section->section == 0 || $section->section == 1 || $section->section == 2 || $section->section == 3)) {
+                $row->cells = array(
+                    "",
+                    format_string(get_section_name($course, $section))
+                );
+            } else {
+                $row->cells = array(
+                    html_writer::empty_tag('input', array('type' => 'radio', 'name' => 'targetsection', 'value' => $section->section)),
+                    format_string(get_section_name($course, $section))
+                );
+
+
+            }
             $table->data[] = $row;
         }
+
+
+
         $html .= html_writer::table($table);
         $html .= html_writer::end_tag('div');
 
