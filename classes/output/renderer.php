@@ -102,8 +102,6 @@ class local_importtosection_core_backup_renderer extends core_backup_renderer {
                     html_writer::empty_tag('input', array('type' => 'radio', 'name' => 'targetsection', 'value' => $section->section)),
                     format_string(get_section_name($course, $section))
                 );
-
-
             }
             $table->data[] = $row;
         }
