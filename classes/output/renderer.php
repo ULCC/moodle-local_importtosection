@@ -60,6 +60,9 @@ class local_importtosection_core_backup_renderer extends core_backup_renderer {
      */
     public function local_importtosection_target_section_selector (moodle_url $nexturl, stdClass $course) {
 
+        global $USER;
+
+
         $sections = get_fast_modinfo($course)->get_section_info_all();
 
         $html  = html_writer::start_tag('div', array('class' => 'import-course-selector backup-restore'));
@@ -83,7 +86,7 @@ class local_importtosection_core_backup_renderer extends core_backup_renderer {
 
         if (class_exists('\local_smuc_content_edit_restriction\content_edit_restriction')) {
             $contentrestrict = new \local_smuc_content_edit_restriction\content_edit_restriction();
-            if ($contentrestrict->is_restricted_course($course->id))    {
+            if ($contentrestrict->is_restricted_course($course->id) && !is_siteadmin($USER->id) && !has_capability('local/smuc_content_edit_restriction:overriderestriction', context_course::instance($COURSE->id)))    {
                 $restrictcoursesections     =   true;
             }
         }
