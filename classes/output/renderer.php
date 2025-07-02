@@ -60,7 +60,7 @@ class local_importtosection_core_backup_renderer extends core_backup_renderer {
      */
     public function local_importtosection_target_section_selector (moodle_url $nexturl, stdClass $course) {
 
-        global $USER;
+        global $USER, $COURSE;
 
 
         $sections = get_fast_modinfo($course)->get_section_info_all();
